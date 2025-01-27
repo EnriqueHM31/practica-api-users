@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import TablUser from "./assets/components/TableUsers";
+import Botones from "./assets/components/Botones";
 
 function App() {
   const API_URL = "https://randomuser.me/api/?results=100";
@@ -21,13 +22,6 @@ function App() {
     setColumnasPintadas(prevState => !prevState);
   }
 
-  const pintarBotones = (estado) => {
-    const fondo = estado ? "#ff0" : "transparent"
-    const color = estado ? "#000" : "#fff"
-    return { fondo, color }
-  }
-
-  const { fondo: fondoPintarColumnas, color: colorPintarColumnas } = pintarBotones(columnasPintadas);
 
   const handleFilterPais = () => {
     const filtradoPais = [...users].toSorted((a, b) => a.location.country.localeCompare(b.location.country));
@@ -40,16 +34,15 @@ function App() {
       <header>
         <h1>Api Users App</h1>
 
-        <div className="contenedor-botones">
-          <button style={{ backgroundColor: fondoPintarColumnas, color: colorPintarColumnas }} onClick={handlePintarColumnas}>Pintar Columnas</button>
-          <button onClick={handleFilterPais}>Ordenar pos pais</button>
+        <div className='contenedor-botones'>
+          <Botones handleFilterPais={handleFilterPais} handlePintarColumnas={handlePintarColumnas} />
         </div>
       </header >
 
       <main>
         <h2>Tabla de usuarios de la API Random User</h2>
 
-        {users !== null ? <TablUser pintarColumnas={columnasPintadas} users={users} /> : <p>Cargando...</p>}
+        {users.length !== 0 ? <TablUser pintarColumnas={columnasPintadas} users={users} /> : <p className="loading">Cargando...</p>}
       </main>
     </div >
 
