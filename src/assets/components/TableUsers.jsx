@@ -1,4 +1,4 @@
-export default function TablUser({ users, pintarColumnas }) {
+export default function TablUser({ users, pintarColumnas, handleEliminarUsuario }) {
 
 
     return (
@@ -21,7 +21,7 @@ export default function TablUser({ users, pintarColumnas }) {
                                 <td>{user.name.first}</td>
                                 <td>{user.name.last}</td>
                                 <td>{user.location.country}</td>
-                                <td><button>Eliminar</button></td>
+                                <td><button onClick={() => handleEliminarUsuario(user.login.uuid)}>Eliminar</button></td>
                             </tr>
                         )
                     })
