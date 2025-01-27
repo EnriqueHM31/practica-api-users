@@ -1,4 +1,6 @@
-export default function TablUser({ users }) {
+export default function TablUser({ users, pintarColumnas }) {
+
+
     return (
         <table>
             <thead>
@@ -12,9 +14,9 @@ export default function TablUser({ users }) {
             </thead>
             <tbody>
                 {
-                    users.map(user => {
+                    users.map((user, index) => {
                         return (
-                            <tr key={user.login.uuid}>
+                            <tr style={{ backgroundColor: index % 2 === 0 && pintarColumnas ? "#333" : "transparent" }} key={user.login.uuid} >
                                 <td><img src={user.picture.thumbnail} alt={`Avatar de ${user.name.first}`} /></td>
                                 <td>{user.name.first}</td>
                                 <td>{user.name.last}</td>
@@ -25,6 +27,6 @@ export default function TablUser({ users }) {
                     })
                 }
             </tbody>
-        </table>
+        </table >
     );
 }
