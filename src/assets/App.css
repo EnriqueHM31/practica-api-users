@@ -101,7 +101,8 @@ button {
     border: .1rem solid white;
 }
 
-button:hover {
+button:hover,
+button:focus {
     background: #ff0;
     color: black;
 }
