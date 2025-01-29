@@ -76,6 +76,10 @@ th {
     padding: 1rem 2rem
 }
 
+.encabezado-ordenado {
+    background-color: #333;
+}
+
 .thead:hover {
     cursor: pointer;
     background-color: #333;
