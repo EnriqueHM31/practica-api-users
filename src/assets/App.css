@@ -132,6 +132,11 @@ button {
     background: #48e;
 }
 
+.contenedor-botones-paginas button:disabled {
+    background: #48e;
+    color: white;
+}
+
 .contenedor-botones-paginas button img {
     max-width: 3rem;
     width: 100%;
