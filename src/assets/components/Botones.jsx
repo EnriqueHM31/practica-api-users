@@ -1,24 +1,28 @@
 
 
-export default function Botones({ ordenado, handleFilterPais, handlePintarColumnas, handleResetearFilas }) {
+export default function Botones({ columnasPintadas, ChangeInputBuscar, ordenado, handleFilterPais, handlePintarColumnas, handleResetearFilas, users, filtrado }) {
+
+
     const BOTONES = [
-        { id: 1, texto: "Pintar Columnas", metodo: () => handlePintarColumnas(), },
-        { id: 2, texto: !ordenado ? "Ordenar por pais" : "No ordenar", metodo: () => handleFilterPais() },
+        { id: 1, texto: "Pintar Columnas", metodo: () => handlePintarColumnas(), activo: columnasPintadas ? "button-activo" : "button-inactivo" },
+        { id: 2, texto: "Ordenar por pais", metodo: () => handleFilterPais(), activo: ordenado === "pais" ? "button-activo" : "button-inactivo" },
         { id: 3, texto: "Resetear Filas", metodo: () => handleResetearFilas() },
     ]
 
     return (
         <>
             {
-                BOTONES.map(({ id, texto, metodo }) => {
+                BOTONES.map(({ id, texto, metodo, activo }) => {
                     return (
-                        <button onClick={metodo} key={id}>
+                        <button className={activo} onClick={metodo} key={id}>
                             {texto}
                         </button>
                     )
                 })
             }
-            <input type="search" name="buscador" placeholder="Buscar por pais" />
+            <input onChange={(e) => ChangeInputBuscar(e)} type="text" name="buscador" placeholder="Mexico, Canada, Germany" />
+
+            {filtrado !== null && filtrado.length > 0 && users.length === 0 ? <p className="sin-resultados">Sin resultados</p> : null}
         </>
 
     );
