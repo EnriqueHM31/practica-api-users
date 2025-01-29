@@ -1,113 +1,28 @@
-import { useEffect, useState, useRef, useMemo, Fragment } from "react";
+import { Fragment } from "react";
 import TableUser from "./components/TableUsers";
 import Botones from "./components/Botones";
+import { useObtenerUsuarios } from "./services/obtenerUsuarios";
+import { useBotones } from "./hooks/useBotones";
+import { usePages } from "./hooks/usePages";
+import { useOrdenado } from "./hooks/useOrdenado";
+import { MAX_PAGE } from "./utils/config";
+
+
 
 function App() {
 
-  const FORMASORDENAR = { none: 'none', nombre: 'nombre', apellidos: 'apellidos', pais: 'pais' }
-  const { none, pais } = FORMASORDENAR;
 
-  const MAX_PAGE = 3;
-  const MIN_PAGE = 1;
-
-
-  const [ordenado, setOrdenado] = useState(none);
-
-  const [users, setUsers] = useState([]);
-  const [columnasPintadas, setColumnasPintadas] = useState(false);
-  const [filtrado, setFiltrado] = useState(null);
-  const [pagina, setPagina] = useState(MIN_PAGE);
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const originalUser = useRef();
-
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`https://randomuser.me/api/?page=${pagina}&results=10&seed=Enrique`)
-      .then((response) => {
-        if (!response.ok) {
-          setError("Ocurrio un error con la API")
-          throw new Error("Ocurrio un error");
-        }
-        return response.json()
-      })
-      .then(dataUser => {
-        setUsers(dataUser.results);
-        originalUser.current = dataUser.results;
-      })
-      .catch(() => {
-        setError('Ocurrio un error con el servicio')
-        throw new Error("Ocurrio un error con el servicio");
-      })
-      .finally(() => { setLoading(false) });
-
-  }, [pagina]);
-
-  const handlePagesNext = () => {
-    setPagina(prevState => {
-      const newPage = prevState >= MAX_PAGE ? MAX_PAGE : prevState + 1;
-      return newPage;
-    });
-  }
-
-  const handlePagesBefore = () => {
-    setPagina(prevState => {
-      const newPage = prevState === MIN_PAGE ? MIN_PAGE : prevState - 1;
-      return newPage;
-    });
-  }
-
-  const handlePintarColumnas = () => {
-    setColumnasPintadas(prevState => !prevState);
-  }
-
-  const handleFilterPais = () => {
-    const paises = ordenado === none ? pais : none
-    setOrdenado(paises)
-  }
-
-  const handleResetearFilas = () => {
-    setUsers(originalUser.current);
-  }
-
-  const handleEliminarUsuario = (userId) => {
-    const eliminado = users.filter(user => user.login.uuid !== userId);
-    setUsers(eliminado);
-  }
-
-  const ChangeInputBuscar = (e) => {
-    setFiltrado(e.target.value);
-  }
-
-  const handleFiltrarHead = (ordenar) => {
-    setOrdenado(ordenar);
-  }
-
-  const filtrar = useMemo(() => {
-    return filtrado !== null && filtrado.length > 0
-      ? users.filter(user => { return user.location.country.toLowerCase().includes(filtrado.toLowerCase()) })
-      : users;
-  }, [filtrado, users]);
-
-  const newUser = useMemo(() => {
-
-    if (ordenado === 'none') return filtrar;
-    if (ordenado === 'nombre') return [...filtrar].sort((a, b) => a.name.first.localeCompare(b.name.first));
-    if (ordenado === 'apellidos') return [...filtrar].sort((a, b) => a.name.last.localeCompare(b.name.last));
-    if (ordenado === 'pais') return [...filtrar].sort((a, b) => a.location.country.localeCompare(b.location.country));
-    console.log(filtrar);
-  }, [filtrar, ordenado]);
-
+  const { pagina, handlePagesNext, handlePagesBefore } = usePages();
+  const { users, loading, error, handleEliminarUsuario, handleResetearFilas } = useObtenerUsuarios(pagina);
+  const { columnasPintadas, filtrado, ordenado, handlePintarColumnas, handleFilterPais, ChangeInputBuscar, handleFiltrarHead } = useBotones();
+  const newUser = useOrdenado(filtrado, users, ordenado);
 
   return (
     <div className="page">
       <header>
         <h1>Api Users App</h1>
 
-        <div className='contenedor-botones'>
+        <main className='contenedor-botones'>
           <Botones
             users={newUser}
             filtrado={filtrado}
@@ -121,7 +36,7 @@ function App() {
             handleResetearFilas={handleResetearFilas}
           />
           <strong className="paginas">Pagina {pagina} / {MAX_PAGE}</strong>
-        </div>
+        </main>
       </header >
 
       <main>
@@ -145,8 +60,6 @@ function App() {
                 <img src="src/assets/right.png" alt="imagen del boton paginas siguientes" />
               </button>
             </div>
-
-
           </Fragment>
         }
         {loading ? error === null ? <p className="loading">Cargando...</p> : null : null}
