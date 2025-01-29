@@ -22,7 +22,7 @@ export default function TablUser({ ordenado, handleFiltrarHead, users, pintarCol
                 {
                     users.map((user, index) => {
                         return (
-                            <tr style={{ backgroundColor: index % 2 === 0 && pintarColumnas ? "#333" : "transparent" }} key={user.login.uuid} >
+                            <tr className="filas-users" style={{ backgroundColor: index % 2 === 0 && pintarColumnas ? "#333" : "transparent" }} key={user.login.uuid} >
                                 <td><img src={user.picture.thumbnail} alt={`Avatar de ${user.name.first}`} /></td>
                                 <td>{user.name.first}</td>
                                 <td>{user.name.last}</td>
