@@ -43,10 +43,5 @@ export const useObtenerUsuarios = (pagina) => {
         setUsers(eliminado);
     }
 
-
-
     return { users, loading, error, handleEliminarUsuario, handleResetearFilas };
-
-
-
 };
