@@ -83,7 +83,7 @@ th {
 
 td {
     font-size: clamp(1rem, 3vw, 1.5rem);
-    padding: 1rem 0;
+    padding: .5rem 0;
 }
 
 button {
@@ -117,6 +117,27 @@ button {
     border: .1rem solid white;
 }
 
+.contenedor-botones-paginas {
+    display: flex;
+    align-items: center;
+    gap: 1rem
+}
+
+.contenedor-botones-paginas button {
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+}
+
+.contenedor-botones-paginas button:hover {
+    background: #48e;
+}
+
+.contenedor-botones-paginas button img {
+    max-width: 3rem;
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+
 button:hover,
 button:nth-child(3):focus {
     background: #ff0;
@@ -130,6 +151,12 @@ input {
     background: transparent;
 }
 
+
+.filas-users:hover {
+    background: #48e !important;
+    cursor: text;
+}
+
 .sin-resultados {
     font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: bold;
@@ -139,11 +166,24 @@ input {
     border-radius: 1rem;
 }
 
+.btn-pages {
+    margin-bottom: 4rem;
+    border: .1rem solid white;
+}
+
 .loading {
     font-size: clamp(1.5rem, 4vw, 3.5rem);
     font-weight: bold;
     margin-top: 4rem;
     animation: loading .5s infinite linear alternate;
+}
+
+.error {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    padding: 1rem 2rem;
+    border-radius: 1.5rem;
+    background: rgb(243, 50, 50);
+    color: white;
 }
 
 @keyframes loading {
