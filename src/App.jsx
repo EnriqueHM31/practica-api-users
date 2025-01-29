@@ -9,6 +9,7 @@ function App() {
 
   const [users, setUsers] = useState([]);
   const [columnasPintadas, setColumnasPintadas] = useState(false);
+  const [ordenado, setOrdenado] = useState(false);
 
   const originalUser = useRef();
 
@@ -28,10 +29,8 @@ function App() {
     setColumnasPintadas(prevState => !prevState);
   }
 
-
   const handleFilterPais = () => {
-    const filtradoPais = [...users].toSorted((a, b) => a.location.country.localeCompare(b.location.country));
-    setUsers(filtradoPais);
+    setOrdenado(prevState => !prevState);
   }
 
   const handleResetearFilas = () => {
@@ -43,20 +42,29 @@ function App() {
     setUsers(eliminado);
   }
 
+  const filtrado = (() => {
+    return ordenado ? [...users].toSorted((a, b) => a.location.country.localeCompare(b.location.country)) : users;
+  })();
+
+  const newUser = (() => {
+    return ordenado ? filtrado.toSorted((a, b) => a.location.country.localeCompare(b.location.country)) : users;
+  })();
+
+
   return (
     <div className="page">
       <header>
         <h1>Api Users App</h1>
 
         <div className='contenedor-botones'>
-          <Botones handleFilterPais={handleFilterPais} handlePintarColumnas={handlePintarColumnas} handleResetearFilas={handleResetearFilas} />
+          <Botones handleFilterPais={handleFilterPais} ordenado={ordenado} handlePintarColumnas={handlePintarColumnas} handleResetearFilas={handleResetearFilas} />
         </div>
       </header >
 
       <main>
         <h2>Tabla de usuarios de la API Random User</h2>
 
-        {users.length !== 0 ? <TablUser pintarColumnas={columnasPintadas} users={users} handleEliminarUsuario={handleEliminarUsuario} /> : <p className="loading">Cargando...</p>}
+        {users.length !== 0 ? <TablUser pintarColumnas={columnasPintadas} users={newUser} handleEliminarUsuario={handleEliminarUsuario} /> : <p className="loading">Cargando...</p>}
       </main>
     </div >
 
