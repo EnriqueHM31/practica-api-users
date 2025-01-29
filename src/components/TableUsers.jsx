@@ -1,4 +1,4 @@
-export default function TablUser({ ordenado, handleFiltrarHead, users, pintarColumnas, handleEliminarUsuario }) {
+export default function TableUser({ ordenado, handleFiltrarHead, users, pintarColumnas, handleEliminarUsuario }) {
 
     const FORMASORDENAR = { none: 'none', nombre: 'nombre', apellidos: 'apellidos', pais: 'pais' }
 
