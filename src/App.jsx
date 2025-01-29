@@ -84,14 +84,30 @@ function App() {
         <h1>Api Users App</h1>
 
         <div className='contenedor-botones'>
-          <Botones columnasPintadas={columnasPintadas} ChangeInputBuscar={ChangeInputBuscar} handleFilterPais={handleFilterPais} ordenado={ordenado} handlePintarColumnas={handlePintarColumnas} handleResetearFilas={handleResetearFilas} users={newUser} filtrado={filtrado} />
+          <Botones
+            users={newUser}
+            filtrado={filtrado}
+            ordenado={ordenado}
+            columnasPintadas={columnasPintadas}
+            ChangeInputBuscar={ChangeInputBuscar}
+            handleFilterPais={handleFilterPais}
+            handlePintarColumnas={handlePintarColumnas}
+            handleResetearFilas={handleResetearFilas}
+          />
         </div>
       </header >
 
       <main>
         <h2>Tabla de usuarios de la API Random User</h2>
 
-        {users.length !== 0 ? <TablUser ordenado={ordenado} handleFiltrarHead={handleFiltrarHead} pintarColumnas={columnasPintadas} users={newUser} handleEliminarUsuario={handleEliminarUsuario} /> : <p className="loading">Cargando...</p>}
+        {users.length !== 0
+          ? <TablUser
+            users={newUser}
+            ordenado={ordenado}
+            pintarColumnas={columnasPintadas}
+            handleFiltrarHead={handleFiltrarHead}
+            handleEliminarUsuario={handleEliminarUsuario} />
+          : <p className="loading">Cargando...</p>}
       </main>
     </div >
 
