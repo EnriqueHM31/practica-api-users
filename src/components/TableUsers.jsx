@@ -1,20 +1,26 @@
+import { FORMAS_ORDENAR } from "../utils/config";
+
 export default function TableUser({ ordenado, handleFiltrarHead, users, pintarColumnas, handleEliminarUsuario }) {
 
-    const FORMASORDENAR = { none: 'none', nombre: 'nombre', apellidos: 'apellidos', pais: 'pais' }
 
-    const { none, nombre, apellidos, pais } = FORMASORDENAR;
+    const { none, nombre, apellidos, pais } = FORMAS_ORDENAR;
 
     const ordenarPor = (opcionOrdenar) => {
         return ordenado === opcionOrdenar ? none : opcionOrdenar;
     }
+
+    const ponerFondo = (formaOrdenado) => {
+        return ordenado === formaOrdenado ? "encabezado-ordenado" : "";
+    }
+
     return (
         <table>
             <thead>
                 <tr>
                     <th>Avatar</th>
-                    <th className="thead" style={{ backgroundColor: ordenado === nombre ? "#333" : "" }} onClick={() => handleFiltrarHead(ordenarPor(nombre))}>Nombre</th>
-                    <th className="thead" style={{ backgroundColor: ordenado === apellidos ? "#333" : "" }} onClick={() => handleFiltrarHead(ordenarPor(apellidos))}>Apellidos</th>
-                    <th className="thead" style={{ backgroundColor: ordenado === pais ? "#333" : "" }} onClick={() => handleFiltrarHead(ordenarPor(pais))}>Pais</th>
+                    <th className={`thead ${ponerFondo(nombre)}`} onClick={() => handleFiltrarHead(ordenarPor(nombre))}>Nombre</th>
+                    <th className={`thead ${ponerFondo(apellidos)}`} onClick={() => handleFiltrarHead(ordenarPor(apellidos))}>Apellidos</th>
+                    <th className={`thead ${ponerFondo(pais)}`} onClick={() => handleFiltrarHead(ordenarPor(pais))}>Pais</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
