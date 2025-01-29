@@ -1,12 +1,8 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import TablUser from "./assets/components/TableUsers";
-import Botones from "./assets/components/Botones";
-import { useRef } from "react";
-import { useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, Fragment } from "react";
+import TablUser from "./components/TableUsers";
+import Botones from "./components/Botones";
 
 function App() {
-  const API_URL = "https://randomuser.me/api/?results=100";
 
   const FORMASORDENAR = { none: 'none', nombre: 'nombre', apellidos: 'apellidos', pais: 'pais' }
 
@@ -18,23 +14,43 @@ function App() {
   const [users, setUsers] = useState([]);
   const [columnasPintadas, setColumnasPintadas] = useState(false);
   const [filtrado, setFiltrado] = useState(null);
+  const [pagina, setPagina] = useState(1);
 
-
-
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const originalUser = useRef();
 
-  useEffect(() => {
-    setTimeout(() => {
-      fetch(API_URL)
-        .then((response) => response.json())
-        .then((dataUser) => {
-          setUsers(dataUser.results)
-          originalUser.current = dataUser.results;
-        });
-    }, 2000)
 
-  }, []);
+  useEffect(() => {
+    setLoading(true);
+    fetch(`https://randomuser.me/api/?page=${pagina}&results=10&seed=Enrique`)
+      .then((response) => {
+        if (!response.ok) {
+          setError("Ocurrio un error con la API")
+          throw new Error("Ocurrio un error");
+        }
+        return response.json()
+      })
+      .then(dataUser => {
+        setUsers(dataUser.results);
+        originalUser.current = dataUser.results;
+      })
+      .catch(() => {
+        setError('Ocurrio un error con el servicio')
+        throw new Error("Ocurrio un error con el servicio");
+      })
+      .finally(() => { setLoading(false) });
+
+  }, [pagina]);
+
+  const handlePagesNext = () => {
+    setPagina(prevState => prevState + 1);
+  }
+
+  const handlePagesBefore = () => {
+    setPagina(prevState => prevState - 1);
+  }
 
   const handlePintarColumnas = () => {
     setColumnasPintadas(prevState => !prevState);
@@ -100,14 +116,29 @@ function App() {
       <main>
         <h2>Tabla de usuarios de la API Random User</h2>
 
-        {users.length !== 0
-          ? <TablUser
-            users={newUser}
-            ordenado={ordenado}
-            pintarColumnas={columnasPintadas}
-            handleFiltrarHead={handleFiltrarHead}
-            handleEliminarUsuario={handleEliminarUsuario} />
-          : <p className="loading">Cargando...</p>}
+        {error !== null && <p className="error">{error}</p>}
+        {!loading && error === null
+          &&
+          <Fragment>
+            <TablUser
+              users={newUser}
+              ordenado={ordenado}
+              pintarColumnas={columnasPintadas}
+              handleFiltrarHead={handleFiltrarHead}
+              handleEliminarUsuario={handleEliminarUsuario} />
+            <div className="contenedor-botones-paginas">
+              <button onClick={() => handlePagesBefore()} className="btn-pages">
+                <img src="src/assets/left.png" alt="imagen del boton paginas anteriores" />
+              </button>
+              <button onClick={() => handlePagesNext()} className="btn-pages">
+                <img src="src/assets/right.png" alt="imagen del boton paginas siguientes" />
+              </button>
+            </div>
+
+
+          </Fragment>
+        }
+        {loading ? error === null ? <p className="loading">Cargando...</p> : null : null}
       </main>
     </div >
 
