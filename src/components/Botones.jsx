@@ -1,6 +1,6 @@
 
 
-export default function Botones({ columnasPintadas, ChangeInputBuscar, ordenado, handleFilterPais, handlePintarColumnas, handleResetearFilas, users, filtrado }) {
+export default function Botones({ error, loading, columnasPintadas, ChangeInputBuscar, ordenado, handleFilterPais, handlePintarColumnas, handleResetearFilas, users, filtrado }) {
 
 
     const BOTONES = [
@@ -22,7 +22,7 @@ export default function Botones({ columnasPintadas, ChangeInputBuscar, ordenado,
             }
             <input onChange={(e) => ChangeInputBuscar(e)} type="text" name="buscador" placeholder="Mexico, Canada, Germany" />
 
-            {filtrado !== null && filtrado.length > 0 && users.length === 0 ? <p className="sin-resultados">Sin resultados</p> : null}
+            {filtrado !== null && error === null && !loading && users.length === 0 ? <p className="sin-resultados">Sin resultados</p> : null}
         </>
 
     );
