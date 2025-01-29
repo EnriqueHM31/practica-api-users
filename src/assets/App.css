@@ -1,4 +1,5 @@
 * {
+    color-scheme: dark;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -75,6 +76,11 @@ th {
     padding: 1rem 2rem
 }
 
+.thead:hover {
+    cursor: pointer;
+    background-color: #333;
+}
+
 td {
     font-size: clamp(1rem, 3vw, 1.5rem);
     padding: 1rem 0;
@@ -90,6 +96,16 @@ button {
     transition: background 0.3s, color 0.3s;
 }
 
+.button-activo {
+    background: #ff0;
+    color: black;
+}
+
+.button-inactivo {
+    background: #000;
+    color: white;
+}
+
 .contenedor-botones {
     display: flex;
     align-items: center;
@@ -102,9 +118,25 @@ button {
 }
 
 button:hover,
-button:focus {
+button:nth-child(3):focus {
     background: #ff0;
     color: black;
+}
+
+input {
+    padding: 1rem 2rem;
+    border: .1rem solid white;
+    border-radius: 1.2rem;
+    background: transparent;
+}
+
+.sin-resultados {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: bold;
+    padding: 1rem 2rem;
+    background: rgb(243, 50, 50);
+    color: white;
+    border-radius: 1rem;
 }
 
 .loading {
