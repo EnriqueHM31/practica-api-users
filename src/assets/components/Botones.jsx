@@ -1,9 +1,9 @@
 
 
-export default function Botones({ handleFilterPais, handlePintarColumnas, handleResetearFilas }) {
+export default function Botones({ ordenado, handleFilterPais, handlePintarColumnas, handleResetearFilas }) {
     const BOTONES = [
         { id: 1, texto: "Pintar Columnas", metodo: () => handlePintarColumnas(), },
-        { id: 2, texto: "Ordenar por pais", metodo: () => handleFilterPais() },
+        { id: 2, texto: !ordenado ? "Ordenar por pais" : "No ordenar", metodo: () => handleFilterPais() },
         { id: 3, texto: "Resetear Filas", metodo: () => handleResetearFilas() },
     ]
 
@@ -18,6 +18,7 @@ export default function Botones({ handleFilterPais, handlePintarColumnas, handle
                     )
                 })
             }
+            <input type="search" name="buscador" placeholder="Buscar por pais" />
         </>
 
     );
