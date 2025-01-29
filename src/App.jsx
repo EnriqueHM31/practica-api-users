@@ -1,12 +1,14 @@
 import { useEffect, useState, useRef, useMemo, Fragment } from "react";
-import TablUser from "./components/TableUsers";
+import TableUser from "./components/TableUsers";
 import Botones from "./components/Botones";
 
 function App() {
 
   const FORMASORDENAR = { none: 'none', nombre: 'nombre', apellidos: 'apellidos', pais: 'pais' }
-
   const { none, pais } = FORMASORDENAR;
+
+  const MAX_PAGE = 3;
+  const MIN_PAGE = 1;
 
 
   const [ordenado, setOrdenado] = useState(none);
@@ -14,7 +16,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [columnasPintadas, setColumnasPintadas] = useState(false);
   const [filtrado, setFiltrado] = useState(null);
-  const [pagina, setPagina] = useState(1);
+  const [pagina, setPagina] = useState(MIN_PAGE);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -45,11 +47,17 @@ function App() {
   }, [pagina]);
 
   const handlePagesNext = () => {
-    setPagina(prevState => prevState + 1);
+    setPagina(prevState => {
+      const newPage = prevState >= MAX_PAGE ? MAX_PAGE : prevState + 1;
+      return newPage;
+    });
   }
 
   const handlePagesBefore = () => {
-    setPagina(prevState => prevState - 1);
+    setPagina(prevState => {
+      const newPage = prevState === MIN_PAGE ? MIN_PAGE : prevState - 1;
+      return newPage;
+    });
   }
 
   const handlePintarColumnas = () => {
@@ -105,11 +113,14 @@ function App() {
             filtrado={filtrado}
             ordenado={ordenado}
             columnasPintadas={columnasPintadas}
+            error={error}
+            loading={loading}
             ChangeInputBuscar={ChangeInputBuscar}
             handleFilterPais={handleFilterPais}
             handlePintarColumnas={handlePintarColumnas}
             handleResetearFilas={handleResetearFilas}
           />
+          <strong className="paginas">Pagina {pagina} / {MAX_PAGE}</strong>
         </div>
       </header >
 
@@ -117,10 +128,10 @@ function App() {
         <h2>Tabla de usuarios de la API Random User</h2>
 
         {error !== null && <p className="error">{error}</p>}
-        {!loading && error === null
+        {!loading && error === null && newUser.length > 0
           &&
           <Fragment>
-            <TablUser
+            <TableUser
               users={newUser}
               ordenado={ordenado}
               pintarColumnas={columnasPintadas}
