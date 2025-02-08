@@ -72,7 +72,7 @@ table {
 }
 
 th {
-    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(1rem, 2vw, 2rem);
     padding: 1rem 2rem
 }
 
@@ -211,4 +211,38 @@ input {
         opacity: 1;
     }
 
+}
+
+@media (max-width: 1000px) {
+    .page {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3rem;
+        margin-top: 3rem;
+        max-width: 1380px;
+        width: 100%;
+    }
+
+    table {
+        width: 80%;
+    }
+
+    .contenedor-botones {
+        max-width: 80%;
+        flex-wrap: wrap;
+    }
+
+}
+
+@media (max-width: 1000px) {
+    td {
+        padding: 0;
+    }
+
+    table {
+        width: 95%;
+    }
 }
